@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: service-gateway
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #配置Nacos地址
+    gateway:
+      discovery:
+#        不知道为什么会失效
+#        globalcors:
+#          cors-configurations:
+#            '[/**]':
+#              # 允许携带认证信息
+#              allow-credentials: true
+#              # 允许跨域的源(网站域名/ip)，设置*为全部
+#              allowedOrigins: "*"
+#              # 允许跨域的method， 默认为GET和OPTIONS，设置*为全部
+#              allowedMethods: "*"
+#              # 允许跨域请求里的head字段，设置*为全部
+#              allowedHeaders: "*"
+
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: haha
+          uri: ws:https://www.baidu.com
+
+          predicates:
+          - Path=/good/**
+        - id: service-edu
+          uri: lb://service-edu
+          predicates:
+            - Path=/eduservice/**,/eduuser/**
+#          filters:
+#            - StripPrefix=1
+        - id: service-cms
+          uri: lb://service-cms
+          predicates:
+            - Path=/educms/** # 路径匹配
+        - id: service-msm
+          uri: lb://service-msm
+          predicates:
+            - Path=/edumsm/** # 路径匹配
+        - id: service-ucenter
+          uri: lb://service-ucenter
+          predicates:
+            - Path=/educenter/** # 路径匹配
+        - id: service-order
+          uri: lb://service-order
+          predicates:
+            - Path=/eduorder/** # 路径匹配
+        - id: service-oss
+          uri: lb://service-oss
+          predicates:
+            - Path=/eduoss/** # 路径匹配
+        - id: service-vod
+          uri: lb://service-vod
+          predicates:
+            - Path=/eduvod/** # 路径匹配
+        - id: service-statistics
+          uri: lb://service-statistics
+          predicates:
+            - Path=/edustatistics/** # 路径匹配
+server:
+  port: 9526

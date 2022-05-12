@@ -1,0 +1,51 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: service-oss
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #配置Nacos地址
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-chengdu.aliyuncs.com
+      keyid: LTAI5tLhFwCkoHUF3619twWn
+      keysecret: q4jn1XfORPEny0qPrhQl66tiOovEso
+      bucketname: yueli14gulixueyuan
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+#整合seata，太多了，懒得找
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  # 事务群组（可以每个应用独立取名，也可以使用相同的名字），要与服务端nacos-config.txt中service.vgroup_mapping的后缀对应
+  #  service.vgroupMapping.default_tx_group=default
+  tx-service-group: default_tx_group
+  config:
+    type: nacos
+    # 需要和server在同一个注册中心下
+    nacos:
+      namespace: 07c2c14f-ed79-4c13-90e0-35a35b9d0fad
+      serverAddr: localhost:8848
+      # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
+      group: SEATA_GROUP
+      username: "nacos"
+      password: "nacos"
+  registry:
+    type: nacos
+    nacos:
+      # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
+      application: seata-server
+      server-addr: localhost:8848
+      group: SEATA_GROUP
+      namespace: 07c2c14f-ed79-4c13-90e0-35a35b9d0fad
+      username: "nacos"
+      password: "nacos"

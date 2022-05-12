@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wcl.serviceedu.mapper.EduVideoMapper">
+    <select id="getAllVideoSourceIdByCourseId" resultType="java.lang.String">
+        select v.video_source_id as videoSourceId
+        from edu_video v
+        where course_id = #{courseId}
+    </select>
+</mapper>

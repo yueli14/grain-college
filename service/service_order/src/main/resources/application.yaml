@@ -1,0 +1,84 @@
+spring:
+  application:
+    name: service-order
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/gulixueyuan?serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #配置Nacos地址
+#  sentinel:
+#    transport:
+#      #配置Sentinel dashboard地址
+#      dashboard: localhost:8080
+#      #默认8719端口，假如被占用会自动从8719开始依次+1扫描,直至找到未被占用的端口
+#      port: 8719
+#### application-dev.yml
+server:
+  port: 8006
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #  逻辑删除
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  #配置mapper xml文件的路径
+  mapper-locations: classpath:com/wcl/order/mapper/xml/*.xml
+
+feign:
+  sentinel:
+    enabled: true
+#  feign.client.config.default.connectTimeout=10000 //Feign的连接建立超时时间，默认为10秒
+#  feign.client.config.default.readTimeout=60000 //Feign的请求处理超时时间，默认为60
+#  feign.client.config.default.retryer=feign.Retryer.Default
+#配置logback文件
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  # 事务群组（可以每个应用独立取名，也可以使用相同的名字），要与服务端nacos-config.txt中service.vgroup_mapping的后缀对应
+  #  service.vgroupMapping.default_tx_group=default
+  tx-service-group: default_tx_group
+  config:
+    type: nacos
+    # 需要和server在同一个注册中心下
+    nacos:
+      namespace: 07c2c14f-ed79-4c13-90e0-35a35b9d0fad
+      serverAddr: localhost:8848
+      # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
+      group: SEATA_GROUP
+      username: "nacos"
+      password: "nacos"
+  registry:
+    type: nacos
+    nacos:
+      # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
+      application: seata-server
+      server-addr: localhost:8848
+      group: SEATA_GROUP
+      namespace: 07c2c14f-ed79-4c13-90e0-35a35b9d0fad
+      username: "nacos"
+      password: "nacos"
+wx:
+  pay:
+    app_id: wx74862e0dfcf69954
+    mch_id: 1558950191
+    key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
+    notify_url: http://guli.shop/api/order/weixinPay/weixinNotify

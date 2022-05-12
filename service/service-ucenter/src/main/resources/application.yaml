@@ -1,0 +1,94 @@
+spring:
+  application:
+    name: service-ucenter
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/gulixueyuan?serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #配置Nacos地址
+  redis:
+    host: localhost
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 5
+        min-idle: 0
+    database: 0
+    timeout: 2000
+#### application-dev.yml
+server:
+  port: 8160
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #  逻辑删除
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  #配置mapper xml文件的路径
+  mapper-locations: classpath:com/wcl/serviceedu/mapper/xml/*.xml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    #  wx.open.app_id=wxed9954c01bb89b47
+    #  # \u5FAE\u4FE1\u5F00\u653E\u5E73\u53F0 appsecret
+    #  wx.open.app_secret=a7482517235173ddb4083788de60b90e
+    #  # \u5FAE\u4FE1\u5F00\u653E\u5E73\u53F0 \u91CD\u5B9A\u5411url
+    #  wx.open.redirect_url=http://guli.shop/api/ucenter/wx/callback
+wx:
+  open:
+    app_id: wxed9954c01bb89b47
+    app_secret: a7482517235173ddb4083788de60b90e
+#    redirecturl: http://guli.shop/api/ucenter/wx/callback
+    redirect_url: http://localhost:8160/api/ucenter/wx/callback
+#整合seata，太多了，懒得找
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  # 事务群组（可以每个应用独立取名，也可以使用相同的名字），要与服务端nacos-config.txt中service.vgroup_mapping的后缀对应
+  #  service.vgroupMapping.default_tx_group=default
+  tx-service-group: default_tx_group
+  config:
+    type: nacos
+    # 需要和server在同一个注册中心下
+    nacos:
+      namespace: 07c2c14f-ed79-4c13-90e0-35a35b9d0fad
+      serverAddr: localhost:8848
+      # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
+      group: SEATA_GROUP
+      username: "nacos"
+      password: "nacos"
+  registry:
+    type: nacos
+    nacos:
+      # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
+      application: seata-server
+      server-addr: localhost:8848
+      group: SEATA_GROUP
+      namespace: 07c2c14f-ed79-4c13-90e0-35a35b9d0fad
+      username: "nacos"
+      password: "nacos"
+
+
+
+    #swagger3自定义配置
+#swagger:
+#  enable: true
+#  application-name: ${spring.application.name}
+#  application-version: 1.0
+#  application-description: ${spring.application.name}整合Demo
+#  try-host: http://localhost:${server.port}
