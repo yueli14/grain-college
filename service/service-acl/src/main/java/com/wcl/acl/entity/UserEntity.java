@@ -1,0 +1,87 @@
+package com.wcl.acl.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import java.io.Serializable;
+import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+/**
+ * <p>
+ * 用户表
+ * </p>
+ *
+ * @author wcl
+ * @since 2022-05-12
+ */
+@Getter
+@Setter
+@Accessors(chain = true)
+@TableName("acl_user")
+public class UserEntity extends Model<UserEntity> {
+
+    /**
+     * 会员id
+     */
+      @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
+
+    /**
+     * 微信openid
+     */
+    @TableField("username")
+    private String username;
+
+    /**
+     * 密码
+     */
+    @TableField("`password`")
+    private String password;
+
+    /**
+     * 昵称
+     */
+    @TableField("nick_name")
+    private String nickName;
+
+    /**
+     * 用户头像
+     */
+    @TableField("salt")
+    private String salt;
+
+    /**
+     * 用户签名
+     */
+    @TableField("token")
+    private String token;
+
+    /**
+     * 逻辑删除 1（true）已删除， 0（false）未删除
+     */
+    @TableLogic
+    @TableField("is_deleted")
+    private Integer isDeleted;
+
+    /**
+     * 创建时间
+     */
+    @TableField(value = "gmt_create",fill = FieldFill.INSERT)
+    private Date gmtCreate;
+
+    /**
+     * 更新时间
+     */
+    @TableField(value = "gmt_modified",fill = FieldFill.INSERT_UPDATE)
+    private Date gmtModified;
+
+
+    @Override
+    public Serializable pkVal() {
+        return this.id;
+    }
+
+}

@@ -12,6 +12,7 @@
     <artifactId>service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
+        <module>service-acl</module>
         <module>service_oss</module>
         <module>service_vod</module>
         <module>service-edu</module>

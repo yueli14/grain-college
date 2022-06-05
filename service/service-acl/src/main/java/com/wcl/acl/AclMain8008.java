@@ -1,22 +1,17 @@
-/**
- * @Classname GateWayMain9526
- * @Description TODO
- * @Date 2022/5/8 16:10
- * @Created by 28327
- */
-
-package com.wcl.gateway;
+package com.wcl.acl;
 
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class GateWayMain9526 {
+@ComponentScan(value = {"com.wcl"})
+public class AclMain8008 {
     public static void main(String[] args) {
-        SpringApplication.run(GateWayMain9526.class, args);
-
+        SpringApplication.run(AclMain8008.class, args);
     }
+
 }

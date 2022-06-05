@@ -11,6 +11,7 @@
 
     <artifactId>common</artifactId>
     <modules>
+        <module>spring_security</module>
         <module>service-base</module>
         <module>commom-utils</module>
     </modules>
